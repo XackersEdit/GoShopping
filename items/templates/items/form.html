@@ -1,0 +1,71 @@
+{% extends 'core/base.html' %}
+{% block title %} {{ title }} {% endblock %}
+{% block content %}
+<h1 class="mb-6 text-3xl">{{ title }}</h1>
+<form method="post" action="." enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="space-y-4">
+<!--        {{ form.as_p }}-->
+<!--        {% if some_items %}-->
+        <div class="mb-3">
+            <label class="inline-block mb-2">Category</label>
+            {{ form.category }}
+        </div>
+<!--        {% endif %}-->
+        <div class="mb-3">
+            <label class="inline-block mb-2">Name</label>
+            {{ form.name }}
+        </div>
+        <div class="mb-3">
+            <label class="inline-block mb-2">Description</label>
+            {{ form.description }}
+        </div>
+        <div class="mb-3">
+            <label class="inline-block mb-2">Price</label>
+            {{ form.price }}
+        </div>
+        <div class="mb-3">
+            <label class="inline-block mb-2">Image</label>
+            {{ form.image }}
+        </div>
+        <div class="mb-3">
+            <label class="inline-block mb-2">Shipping</label>
+            {{ form.shipping }}
+        </div>
+        <div class="mb-3 grid grid-cols-5 gap-2">
+            <label class="col-span-1 mb-2">Supply Period:</label>
+            <div class="col-span-2 grid grid-cols-3 gap-2">
+                {% for checkbox in form.supply_period %}
+                    <div class="col-span-1 sm:col-span-1">
+                        {{ checkbox }}
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="inline-block mb-2">Maximum Supply Ability</label><br>
+            {{ form.supply_ability }}
+            {{ form.supply_ability_unit }}
+            {{ form.supply_ability_length }}
+        </div>
+        <div class="mb-3">
+            <label class="inline-block mb-2">To'lov turi:</label><br>
+            {{ form.payment_method }}
+        </div>
+  </div>
+  {% if form.errors or form.non_field_errors %}
+    <div class='mb-3 p-6 bg-red-100 rounded-xl'>
+        {% for field in form %}
+            {{ field.errors}}
+        {% endfor %}
+
+        {{ form.non_field_errors }}
+    </div>
+  {% endif %}
+    <button class="mt-6 py-4 px-8 text-lg bg-teal-500 hover:bg-teal-700 rounded-xl text-white">Submit</button>
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'core/base.html' %}
+{% block title %}Inbox{% endblock %}
+{% block content %}
+<h1 class="mb-6 text-3xl md:text-4xl">Inbox</h1>
+<div class="space-y-6">
+    {% for message in conversations %}
+    <a href="{% url 'conversation:detail' message.id %}" class="p-4 md:p-6 flex items-center {% if message.checked %}bg-gray-100{% else %}bg-gray-500{% endif %} rounded-xl">
+        <div class="pr-4 md:pr-6 w-1/4 md:w-[120px] ">
+            <img src="{{ message.item.image_url }}" class="w-full rounded-xl">
+        </div>
+
+        <div class="w-3/4">
+            {% for member in message.members.all %}
+                {% if member != request.user %}
+                    <p class="mb-2 md:mb-4 text-sm md:text-base">
+                        <strong>{{ member.username }}</strong> | {{message.modified_at|date:"M d, Y H:i" }}
+                    </p>
+                    <p class="text-sm md:text-base">{{ message.item.name }}</p>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}

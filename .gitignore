@@ -1,0 +1,7 @@
+# Ignore configuration and environment files
+.env
+config.ini
+
+env/
+
+.vscode/
