@@ -1,0 +1,76 @@
+{% extends 'core/base.html' %}
+
+{% block title %} Home Page {% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+
+<form method="get" action="{% url 'items:browse' %}" class="flex items-center justify-center mb-6">
+  <div class="flex w-full md:w-2/3">
+      <input name="query" class="w-full py-2 md:py-4 px-3 md:px-6 border rounded-l-3xl" type="text" value="{{ query }}" placeholder="Find carrots, broccoli or potato...">
+      <button class="py-2 md:py-4 px-4 md:px-8 text-lg rounded-r-3xl bg-teal-500 text-white">Search</button>
+  </div>
+</form>
+
+
+<div class="px-6 py-12 bg-gray-300 rounded-xl">
+  <h2 class="mb-12 text-2xl text-center">Categories</h2>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+    {% for category in categories %}
+    <div class='rounded-xl bg-white transition-shadow hover:shadow-lg'>
+      <a href="{% url 'items:browse' %}?category={{ category.id }}">
+        <div class="p-6 rounded-xl">
+          <h2 class="text-2xl">{{ category.name }}</h2>
+          <p class="text-gray-500">{{ category.items.count }} items</p>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+
+
+</div>
+<div class="mt-6 px-6 py-12 bg-gray-300 rounded-xl">
+  <h2 class="text-xl sm:text-2xl mb-12 text-center">Newest items</h2>
+
+  <div class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 gap-3">
+    {% for item in items|slice:":5" %}
+    <div class="rounded-xl transition-shadow hover:shadow-lg">
+        <a href="{% url 'items:detail' item.id %}">
+            <!-- Using w-full and h-auto ensures the image scales proportionately across all devices -->
+            <img src="{{ item.image_url }}" class="rounded-t-xl w-full h-15vw md:w-20vw md:h-60" style="object-fit: cover;">
+            
+            <div class="p-6 py-3 bg-white rounded-b-xl">
+                <h2 class="text-sm sm:text-lg">{{ item.name }}</h2>
+                <p class="text-gray-500">Price: {{ item.price }} so'm</p>
+                <p class="text-gray-500 text-sm">Date: {{ item.created_at|date:"F j, Y" }}</p>
+            </div>
+        </a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+
+<div class="mt-6 px-6 py-12 bg-gray-300 rounded-xl" id="index-all-items-container">
+    <div class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 gap-3">
+        {% for item in items|slice:"5:" %}
+        <div class="rounded-xl" onmouseover="this.style.boxShadow='0 0 10px #888'" onmouseout="this.style.boxShadow='None'">
+            <a href="{% url 'items:detail' item.id %}">
+                <img src="{{ item.image_url }}" class="rounded-t-xl w-full h-15vw md:w-20vw md:h-60" style="object-fit: cover;">
+                <div class="p-6 py-3 bg-white rounded-b-xl">
+                    <h2 class="text-sm sm:text-lg">{{ item.name }}</h2>
+                    <p class="text-gray-500">Price: {{ item.price }} so'm</p>
+                    <p class="text-gray-500 text-sm">Date: {{ item.created_at|date:"F j, Y" }}</p>
+                </div>
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}
